@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversor de Viento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 15px;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    header {
+      background: #128C7E;
+      color: white;
+      text-align: center;
+      padding: 15px;
+    }
+    h1 { font-size: 20px; margin: 0; }
+    .content { padding: 20px; }
+    .input-group { margin-bottom: 15px; }
+    label {
+      font-weight: bold;
+      color: #128C7E;
+      display: block;
+      margin-bottom: 5px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      background: #25D366;
+      border: none;
+      padding: 12px;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background: #128C7E;
+      color: white;
+    }
+    tr:nth-child(even) { background: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Conversor de Viento</h1>
+    </header>
+    <div class="content">
+      <form id="windForm">
+        <div class="input-group">
+          <label for="wind">Medición (m/s)</label>
+          <input type="number" id="wind" name="wind" step="0.1" placeholder="Ej: 5.5" required>
+        </div>
+        <button type="submit">Mostrar en tabla</button>
+      </form>
+
+      <table id="resultTable" style="display:none;">
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>m/s</th>
+            <th>Nudos</th>
+            <th>km/h</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="horaCell"></td>
+            <td id="msCell"></td>
+            <td id="knotsCell"></td>
+            <td id="kmhCell"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('windForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const ms = parseFloat(document.getElementById('wind').value);
+
+      if (!isNaN(ms)) {
+        const knots = (ms * 1.94384).toFixed(2);
+        const kmh = (ms * 3.6).toFixed(2);
+
+        // obtener hora actual en formato HH:MM
+        const now = new Date();
+        const hora = now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+
+        document.getElementById('horaCell').textContent = hora;
+        document.getElementById('msCell').textContent = ms.toFixed(2);
+        document.getElementById('knotsCell').textContent = knots;
+        document.getElementById('kmhCell').textContent = kmh;
+
+        document.getElementById('resultTable').style.display = 'table';
+      }
+    });
+  </script>
+</body>
+</html>
